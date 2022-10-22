@@ -24,14 +24,41 @@
         <td>{{$post['posted_by']}}</td>
         <td>{{$post['creation_date']}}</td>
         <td>
-            <a href="{{route('posts.show', $post['id'])}}" class="btn btn-info">View</a>
-            {{-- <a href="{{route('posts.show', ['post' =>$post['id']])}}" class="btn btn-info">View</a> --}}
-            <a href="{{route('posts.edit', $post['id'])}}" class="btn btn-primary">Edit</a>
+            <form style="display: inline ;"  action="{{route('posts.show', $post['id'])}}" method="GET">
+            @csrf
+            @component('components.button')    
+            @slot('class')
+            info
+            @endslot
+            @slot('title')
+            View
+            @endslot
+           @endcomponent
+            </form>
+            <form style="display: inline ;"  action="{{route('posts.edit', $post['id'])}}" method="GET">
+            @csrf
+            @component('components.button')    
+            @slot('class')
+            primary
+            @endslot
+            @slot('title')
+            Edit
+            @endslot
+           @endcomponent
+            </form>
             <form style="display: inline ;"  action="{{route('posts.destroy', $post['id'])}}" method="POST">
             @csrf
             @method('Delete')
-            <button type="submit"  class="btn btn-danger" id="delete_btn">Delete</button>
+            @component('components.button')    
+            @slot('class')
+                danger
+            @endslot
+            @slot('title')
+                Delete
+            @endslot
+           @endcomponent
             </form>
+
             
         </td>
       </tr>

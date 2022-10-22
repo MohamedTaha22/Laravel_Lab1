@@ -25,7 +25,7 @@ class PostController extends Controller
 
     public function show($postId)
     {
-        $arr = [
+        $Posts = [
             ['id' => 1, 'category' => 'test']
         ];
 
@@ -38,7 +38,6 @@ class PostController extends Controller
     }
     public function edit($postId)
     {
-        // dd("taha");
         return view('posts.edit',['postId' => $postId]);
         
     }
