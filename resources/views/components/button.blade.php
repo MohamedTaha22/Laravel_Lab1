@@ -1,3 +1,1 @@
-<button class="btn btn-{{$class}}" type="submit" >
-    {{$title}}
-</button>
+<button type="submit" class="btn btn-{{$class}}">{{ $text }}</button>
