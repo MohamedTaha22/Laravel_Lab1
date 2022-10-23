@@ -21,8 +21,8 @@
 		<tr>
 			<td>{{$post['id']}}</th>
 			<td>{{$post['title']}}</td>
-			<td>{{$post['posted_by']}}</td>
-			<td>{{$post['creation_date']}}</td>
+			<td>{{$post->user->name}}</td>
+			<td>{{ $post->created_at->format('Y-m-d') }}</td>
 			<td>
 				<form style="display: inline ;" action="{{route('posts.show', $post['id'])}}" method="GET">
 					@csrf
@@ -33,17 +33,44 @@
 
 					<x-button class="primary" text="Edit" />
 				</form>
-				<form style="display: inline ;" action="{{route('posts.destroy', $post['id'])}}" method="POST">
-					@csrf
-					@method('Delete')
-					<x-button class="danger" text="Delete" />
+				<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+					Delete
+				</button>
 
-				</form>
+				<!-- Modal -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+					aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								Are you sure you want to delete this post ?
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+								<form style="display: inline ;" action="{{route('posts.destroy', $post['id'])}}"
+									method="POST">
+									@csrf
+									@method('Delete')
+									<x-button class="danger" text="Yes" />
 
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
 
 			</td>
 		</tr>
 		@endforeach
 	</tbody>
 </table>
+<div class="d-flex justify-content-center">
+            {!! $posts->links() !!}
+        </div>
 @endsection

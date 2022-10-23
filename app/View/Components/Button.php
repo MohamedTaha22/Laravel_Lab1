@@ -14,10 +14,12 @@ class Button extends Component
      */
     public $class;
     public $text;
-    public function __construct($class, $text)
+    public $flag;
+    public function __construct($class, $text,$flag="")
     {
         $this->text=$text;
         $this->class=$class;
+        $this->flag=$flag;
         //
     }
 
