@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 
 use Illuminate\Http\Request;
 
@@ -35,7 +37,7 @@ class PostController extends Controller
         ;
     }
 
-    public function store()
+    public function store(StorePostRequest $request)
     {
         $data = request()->all();
         Post::create([
@@ -52,11 +54,11 @@ class PostController extends Controller
         return view('posts.edit', ['post' => $post,'users'=> $allUsers]);
         ;
     }
-    public function update($postId)
+    public function update($postId,UpdatePostRequest $request)
     {
         $data = request()->all();
 
-        $updatedPost=Post::find($postId);
+        $updatedPost=Post::find($postId); 
         $updatedPost->title=$data['title'];
         $updatedPost->description=$data['description'];
         $updatedPost->user_id=$data['post_creator'];
