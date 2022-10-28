@@ -1,4 +1,5 @@
-@extends('layout.header')
+@extends('layouts.app')
+
 
 @section('title') update @endsection
 @section('content')
@@ -6,6 +7,7 @@
 
   @csrf
   @method('PUT')
+  @include('layout.error')
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Title</label>
     <input name="title" value="{{$post->title}}" type="text" class="form-control" id="exampleInputEmail1"

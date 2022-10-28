@@ -1,4 +1,5 @@
-@extends('layout.header')
+@extends('layouts.app')
+
 
 @section('title') Post {{$post->id}} @endsection
 @section('content')
