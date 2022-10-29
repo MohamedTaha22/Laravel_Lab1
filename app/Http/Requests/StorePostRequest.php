@@ -26,6 +26,7 @@ class StorePostRequest extends FormRequest
         return [
             'title' => 'required|unique:posts|min:3',
             'description' => 'required|min:10',
+            'post_creator'=> 'required|exists:users,id'
         ];
     }
     public function messages()

@@ -7,8 +7,10 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-
+use App\Jobs\DeletePosts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -16,7 +18,9 @@ class PostController extends Controller
     {
         $allPosts = Post::all();
         $posts = Post::paginate(8);
-        return view('posts.index',compact('posts'));
+        // $postJobs = new DeletePosts();
+        // $this->dispatch($postJobs);
+        return view('posts.index', compact('posts'));
     }
 
     public function create()
@@ -30,9 +34,8 @@ class PostController extends Controller
 
     public function show($postId)
     {
-        
         $post = Post::find($postId);
-        $comments = Comment::where('commentable_type', 'App\Models\Post')->where('commentable_id',$postId)->get();
+        $comments = Comment::where('commentable_type', 'App\Models\Post')->where('commentable_id', $postId)->get();
         return view('posts.show', ['post' => $post ,"comments"=> $comments]);
         ;
     }
@@ -40,11 +43,14 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $data = request()->all();
-        Post::create([
-            'title' => $data['title'],
-            'description' => $data['description'],
-            'user_id' => $data['post_creator']
-        ]);
+        $post = new Post();
+        $post->title = $data['title'];
+        $post->description = $data['description'];
+        $post->user_id = $data['post_creator'];
+        if ($data['image']) {
+            $post->image = $data['image']->store('images');
+        }
+        $post->save();
         return redirect('/posts');
     }
     public function edit($postId)
@@ -54,11 +60,11 @@ class PostController extends Controller
         return view('posts.edit', ['post' => $post,'users'=> $allUsers]);
         ;
     }
-    public function update($postId,UpdatePostRequest $request)
+    public function update($postId, UpdatePostRequest $request)
     {
         $data = request()->all();
 
-        $updatedPost=Post::find($postId); 
+        $updatedPost=Post::find($postId);
         $updatedPost->title=$data['title'];
         $updatedPost->description=$data['description'];
         $updatedPost->user_id=$data['post_creator'];

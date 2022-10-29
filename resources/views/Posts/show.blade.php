@@ -19,6 +19,9 @@
 		<tr>
 			<td>{{$post->description}}</td>
 		</tr>
+		<tr>
+		<img src="{{ asset("storage/$post->image") }}" class="image-fluid" width="250px">
+		</tr>
 	</tbody>
 </table>
 <table class="table mt-4">
