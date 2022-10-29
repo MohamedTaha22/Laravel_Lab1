@@ -48,7 +48,8 @@ class PostController extends Controller
         $post->description = $data['description'];
         $post->user_id = $data['post_creator'];
         if ($data['image']) {
-            $post->image = $data['image']->store('images');
+            $image = $data['image']->getClientOriginalName();
+            $post->image = $data['image']->storeAs("images", $image,"public");
         }
         $post->save();
         return redirect('/posts');
