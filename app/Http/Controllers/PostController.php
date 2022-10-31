@@ -48,9 +48,9 @@ class PostController extends Controller
         $post->title = $data['title'];
         $post->description = $data['description'];
         $post->user_id = $data['post_creator'];
-        if ($data['image']) {
-            $image = $data['image']->getClientOriginalName();
-            $post->image = $data['image']->storeAs("images", $image,"public");
+        if (array_key_exists('image', $data)) {
+            $image = $data['image'];
+            $post->image = $image->store("images");
         }
         $post->save();
         return redirect('/posts');
@@ -67,10 +67,16 @@ class PostController extends Controller
         $data = request()->all();
 
         $updatedPost=Post::find($postId);
+        Storage::delete($updatedPost->image);
+
         $updatedPost->title=$data['title'];
         $updatedPost->description=$data['description'];
         $updatedPost->user_id=$data['post_creator'];
-
+        $updatedPost->image="";
+        if (array_key_exists('image', $data)) {
+            $image = $data['image'];
+            $updatedPost->image = $image->store("images");
+        }
         $updatedPost->save();
         return redirect('posts');
     }
@@ -78,8 +84,7 @@ class PostController extends Controller
     {
         $deletedPost=Post::find($postId);
         $path = $deletedPost->image;
-
-        File::delete("storage/".$path);
+        Storage::delete($path);
         $deletedPost->delete();
         
         return redirect('posts');

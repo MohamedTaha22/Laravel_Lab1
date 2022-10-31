@@ -36,10 +36,9 @@
 
 					<x-button class="primary" text="Edit" />
 				</form>
-				<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+				<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
 					Delete
 				</button>
-
 				<!-- Modal -->
 				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
 					aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -19,9 +19,11 @@
 		<tr>
 			<td>{{$post->description}}</td>
 		</tr>
+		@if(!empty($post->image))
 		<tr>
-		<img src="{{ asset("storage/$post->image") }}" class="image-fluid" width="250px">
+			<img src="{{ asset("/$post->image") }}" class="image-fluid" width="250px">
 		</tr>
+		@endif
 	</tbody>
 </table>
 <table class="table mt-4">
@@ -38,20 +40,19 @@
 			<td>Email: {{$post->user->email}}</td>
 		</tr>
 		<tr>
-			<td>Created At : {{$post->user ?  $post->created_at->format('Y-m-d')  : 'Not Defined'}} </td>
+			<td>Created At : {{$post->user ? $post->created_at->format('Y-m-d') : 'Not Defined'}} </td>
 		</tr>
 	</tbody>
 </table>
 <form action="{{route('comments.store',$post->id)}}" method="POST">
 
-  @csrf
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label"> <b>New Comment</b> </label>
-    <input name="comment" type="text" class="form-control" id="exampleInputEmail1"
-      aria-describedby="emailHelp">
-  </div>
+	@csrf
+	<div class="mb-3">
+		<label for="exampleInputEmail1" class="form-label"> <b>New Comment</b> </label>
+		<input name="comment" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+	</div>
 
-  <button type="submit" class="btn btn-primary">Add Comment</button>
+	<button type="submit" class="btn btn-primary">Add Comment</button>
 </form>
 <table class="table mt-4">
 	<thead>

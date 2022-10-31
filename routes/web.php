@@ -6,7 +6,7 @@ use App\Http\Controllers\CommentController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-
+use App\Http\Controllers\Auth\SocialAuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,56 +37,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 
-Route::get('/auth/redirect', function () {
-    return Socialite::driver('github')->redirect();
-})->name('auth.github');
+Route::get('/auth/redirect',[SocialAuthController::class,'githubRedirect'])->name('auth.github');
 
+Route::get('/auth/google/redirect',[SocialAuthController::class,'googleRedirect'])->name('auth.google');
 
-Route::get('/auth/callback', function () {
-    $githubUser = Socialite::driver('github')->user();
-    $user = User::with('post')->where('email', $githubUser->email)->first();
-    if($user) {
-        $user->update([
-            'name' => $githubUser->name,
-        ]);
-    } else {
-        $user = User::create([
-            'email' => $githubUser->email,
-            'name' => $githubUser->name,
-        ]);
+Route::get('/auth/callback', [SocialAuthController::class, 'githubCallback']);
+Route::get('/auth/google/callback', [SocialAuthController::class, 'googleCallback']);
 
-    }
- 
-    Auth::login($user);
- 
-    return redirect('/posts');
-    // dd($user);
-    // $user->token
-});
-
-
-Route::get('/auth/google/redirect', function () {
-    return Socialite::driver('google')->redirect();
-})->name('auth.google');
-
-Route::get('/auth/google/callback', function () {
-    $googleUser = Socialite::driver('google')->user();
-    $user = User::with('post')->where('email', $googleUser->email)->first();
-    if($user) {
-        $user->update([
-            'name' => $googleUser->name,
-        ]);
-    } else {
-        $user = User::create([
-            'email' => $googleUser->email,
-            'name' => $googleUser->name,
-        ]);
-
-    }
- 
-    Auth::login($user);
- 
-    return redirect('/posts');
-    // dd($user);
-    // $user->token
-});
