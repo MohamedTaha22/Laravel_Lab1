@@ -8,6 +8,7 @@ use App\Models\Comment;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Jobs\DeletePosts;
+use FFI;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -76,8 +77,11 @@ class PostController extends Controller
     public function destroy($postId)
     {
         $deletedPost=Post::find($postId);
+        $path = $deletedPost->image;
+
+        File::delete("storage/".$path);
         $deletedPost->delete();
-        // return view('posts.destroy', ['postId' => $postId]);
+        
         return redirect('posts');
     }
 }
